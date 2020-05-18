@@ -21,24 +21,32 @@ language: c
 compiler:
   - gcc
 
+services:
+  - xvfb
+
+addons:
+  apt:
+    sources:
+      - sourceline: 'ppa:ubuntu-sdk-team/ppa'
+    packages:
+      - qttools5-dev-tools
+      - ccache
+      - automake
+      - gcc
+      - make
+      - libncursesw5-dev
+      - libreadline-dev
+
 matrix:
   include:
     - os: linux
-
-sudo: required
-dist: trusty # Travis CI provides Precise and Trusty only
+      dist: trusty
 
 before_install:
-  - sudo apt-get update -qq
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"  
-  - sudo add-apt-repository --yes ppa:ubuntu-sdk-team/ppa
-  - sudo apt-get update -qq
   - eval "${MATRIX_EVAL}"
 
 install:
-  - sudo apt-get install -qq qttools5-dev-tools ccache
-  - sudo apt-get install -qq automake gcc make libncursesw5-dev libreadline-dev
+  - "export DISPLAY=:99.0"
   - "export HSTRHOME=`pwd`"
 
 script:
